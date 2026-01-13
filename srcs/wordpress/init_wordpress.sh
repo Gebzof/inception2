@@ -2,9 +2,9 @@
 
 set -e
 
-echo "Downloading wordpress.."
+echo "Downloading wordpress"
 
-echo "waiting for mariadb.."
+echo "waiting for mariadb"
 #je ping mariadb silencieusement voir si c'est bon 
 until mysqladmin ping -h "${DB_HOST:-mariadb}" -p 3306 --silent 2>/dev/null; do
 	echo "mariadb is not ready yet"
@@ -26,7 +26,7 @@ if [! -f /var/www/html/wp-config.php]; then
 fi
 
 if ! wp core is-installed -path=/var/www/html --allow-root 2>/dev/null; then
-	echo "installing wordpress.."
+	echo "installing wordpress"
 	wp core install \
 	--url="${WP_URL:-https://localhost}"\
 	--title="${WP_TITLE:-WordPress inception}"\
