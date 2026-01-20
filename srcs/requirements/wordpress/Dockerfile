@@ -19,10 +19,11 @@ RUN sed -i 's/listen = \/run\/php\/php7.4-fpm.sock/listen = 9000/g' /etc/php/7.4
 
 RUN chown -R www-data:www-data /var/www/html
 
-COPY tools/init_wordpress.sh /init_wordpress.sh 
+COPY tools/init_wordpress.sh /init_wordpress.sh
 
 RUN chmod 777 /init_wordpress.sh
 
 EXPOSE 9000
 
-ENTRYPOINT ["/init_wordpress.sh"] #point dentre pour le conteneur
+ENTRYPOINT ["/init_wordpress.sh"]
+ #CN = common name

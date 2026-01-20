@@ -7,10 +7,11 @@ RUN apt-get update && \
 
 RUN mkdir -p /etc/nginx/ssl
 
-RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048\ # x509 = format de certificat, nodes = pas chiffer.
-	-keyout /etc/nginx/ssl/nginx.key\ # ficher de cle
-	-out /etc/nginx/ssl/nginx.crt\ # ficher de sortie
-	-subj "/C=FR/ST=Paris/L=Paris/O=42/CN=localhost" #CN = common name
+#x509 = format de certificat, nodes = pas chiffer.# ficher de cle #CN = common name
+RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048\
+	-keyout /etc/nginx/ssl/nginx.key \
+	-out /etc/nginx/ssl/nginx.crt\
+	-subj "/C=FR/ST=Paris/L=Paris/O=42/CN=localhost"
 
 
 COPY ./conf/nginx.conf /etc/nginx/nginx.conf
