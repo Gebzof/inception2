@@ -15,8 +15,8 @@ help:
 ## —— Deployment ——————————————————————————————————————————————————————————————
 
 up:
-	@mkdir -p /home/gab/data/wordpress
-	@mkdir -p /home/gab/data/mariadb
+	@mkdir -p /home/gpichon/data/wordpress
+	@mkdir -p /home/gpichon/data/mariadb
 	@cd ./srcs && docker compose up -d --build
 	@echo "$(YELLOW)$(BOLD) Containers started successfully.$(DEFAULT)"
 

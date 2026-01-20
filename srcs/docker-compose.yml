@@ -21,62 +21,55 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_ADMIN_USER=${DB_ADMIN_USER}
       - DB_ADMIN_PASSWORD=${DB_ADMIN_PASSWORD}
+  wordpress:
+    build:
+      context: ./wordpress
+      dockerfile: Dockerfile
+    container_name: wordpress
+    restart: always
+    depends_on:
+      - mariadb
+    env_file:
+      .env
+    networks:
+      - inception_network
+    volumes:
+      - wordpress_data:/var/www/html
+    secrets :
+      - db_password
+      - db_admin_password
+      - wp_user_password
+    environment:
+      - DB_HOST=mariadb
+      - DB_NAME=${WP_DATABASE}
+      - DB_USER=${WP_DATABASE_USER}
+      - DB_PASSWORD_FILE=/run/secrets/db_password
+      - WP_URL=${WP_URL}
+      - WP_ADMIN_USER=${WP_ADMIN_USER}
+      - WP_ADMIN_PASSWORD_FILE=/run/secrets/wp_admin_password
+      - WP_ADMIN_EMAIL=${WP_ADMIN_EMAIL}
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: nginx
+    restart: always
+    depends_on:
+      - wordpress
+    env_file:
+      - .env
+    networks:
+      - inception_network
+    volumes:
+      - wordpress_data:/var/www/html
+    ports:
+      - "443:443"
 
-wordpress:
-  build:
-    context: ./wordpress
-    dockerfile: Dockerfile
-  container_name: wordpress
-  restart: always
-  depends_on:
-    - mariadb
-  env_file:
-    .env
-  networks:
-    - inception_network
-  volumes:
-    - wordpress_data:/var/www/html
-  secrets :
-    - db_password
-    - db_admin_password
-    - wp_user_password
-  environment:
-    - DB_HOST=mariadb
-    - DB_NAME=${WP_DATABASE}
-    - DB_USER=${WP_DATABASE_USER}
-    - DB_PASSWORD_FILE=/run/secrets/db_password
-    - WP_URL=${WP_URL}
-    - WP_ADMIN_USER=${WP_ADMIN_USER}
-    - WP_ADMIN_PASSWORD_FILE=/run/secrets/wp_admin_password
-    - WP_ADMIN_EMAIL=${WP_ADMIN_EMAIL}
-
-
-nginx:
-  build :
-    context: ./nginx
-    dockerfile: Dockerfile
-  container_name: nginx
-  restart: always
-  depends_on:
-    - wordpress
-  env_file:
-    - .env
-  netwoerks :
-    - inception_network
-  volumes:
-    -wordpress_data:/var/www/html
-  ports:
-    - "443:443"
-
-
-networks:
-  inception_network:
-    driver: bridge
 
 volumes:
   mariadb_data:
     driver: local
-    drover_opts :
+    driver_opts :
       type : none
       device : /home/gab/data/mariadb
       o: bind
@@ -86,6 +79,11 @@ volumes:
       type : none
       device : /home/gab/data/wordpress
       o: bind
+
+networks:
+  inception_network:
+    driver: bridge
+
 secrets:
   db_password:
     file: ./secrets/db_password
