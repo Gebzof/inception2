@@ -26,4 +26,3 @@ RUN chmod 777 /init_wordpress.sh
 EXPOSE 9000
 
 ENTRYPOINT ["/init_wordpress.sh"]
- #CN = common name

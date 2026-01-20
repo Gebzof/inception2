@@ -9,7 +9,7 @@ RUN mkdir -p /docker-entrypoint-initdb.d
 
 COPY ./imit_mariadb.sh /imit_mariadb.sh
 
-Run chmod +x /imit_mariadb.sh
+RUN chmod +x /imit_mariadb.sh
 
 # port par defaut de mariadb
 EXPOSE 3306
