@@ -3,7 +3,7 @@ version: '3.8'
 services:
   mariadb:
     build:
-      context: .requirements/mariadb
+      context: requirements/mariadb
       dockerfile: Dockerfile
     container_name: mariadb
     env_file :
@@ -23,7 +23,7 @@ services:
       - DB_ADMIN_PASSWORD=${DB_ADMIN_PASSWORD}
   wordpress:
     build:
-      context: .requirements/wordpress
+      context: requirements/wordpress
       dockerfile: Dockerfile
     container_name: wordpress
     restart: always
@@ -50,7 +50,7 @@ services:
       - WP_ADMIN_EMAIL=${WP_ADMIN_EMAIL}
   nginx:
     build:
-      context: .requirements/nginx
+      context: requirements/nginx
       dockerfile: Dockerfile
     container_name: nginx
     restart: always
