@@ -7,27 +7,39 @@ if echo "${WP_ADMIN_USER:-}" | grep -qiE 'admin|administrator'; then
 	exit 1
 fi
 
+# Lire les mots de passe depuis les secrets si disponibles
+if [ -n "${WP_ADMIN_PASSWORD_FILE:-}" ] && [ -f "$WP_ADMIN_PASSWORD_FILE" ]; then
+	WP_ADMIN_PASSWORD=$(cat "$WP_ADMIN_PASSWORD_FILE")
+fi
+if [ -n "${DB_PASSWORD_FILE:-}" ] && [ -f "$DB_PASSWORD_FILE" ]; then
+	DB_PASSWORD=$(cat "$DB_PASSWORD_FILE")
+fi
+
+if [ ! -f /var/www/html/index.php ]; then
+	echo "Copying WordPress files to volume..."
+	cp -a /usr/src/wordpress/. /var/www/html/
+fi
+
 echo "Downloading wordpress"
 
 echo "waiting for mariadb"
 #je ping mariadb silencieusement voir si c'est bon 
-until mysqladmin ping -h "${DB_HOST:-mariadb}" -p 3306 --silent 2>/dev/null; do
+until mysqladmin ping -h "${DB_HOST:-mariadb}" -P 3306 --silent 2>/dev/null; do
 	echo "mariadb is not ready yet"
 	sleep 1
 done
 
 echo "mariadb is ready"
 
-if [! -f /var/www/html/wp-config.php]; then
+if [ ! -f /var/www/html/wp-config.php ]; then
 	echo "configuring wordpress.."
-# config avec les variable env
 	wp core config \
-	--dbname="${DB_NAME:-wordpress}"\
-	--dbuser="${DB_USER:-wordpress}"\
-	--dbpass="${DB_PASSWORD:-wordpress}"\
-	--dbhost="${DB_HOST:-mariadb}"\
-	--allow-root
-	--skip-check || true
+		--dbname="${DB_NAME:-wordpress}" \
+		--dbuser="${DB_USER:-wordpress}" \
+		--dbpass="${DB_PASSWORD:-wordpress}" \
+		--dbhost="${DB_HOST:-mariadb}" \
+		--allow-root \
+		--skip-check || true
 fi
 
 if ! wp core is-installed -path=/var/www/html --allow-root 2>/dev/null; then

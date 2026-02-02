@@ -9,7 +9,7 @@ fi
 
 echo "Initializing mariadb..."
 
-if [ ! -d /var/lib/mysql/mysql]; then
+if [ ! -d /var/lib/mysql/mysql ]; then
 	echo "init bdd of mariadb"
 	mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
 fi
