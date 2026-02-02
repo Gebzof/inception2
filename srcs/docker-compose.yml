@@ -1,6 +1,7 @@
 
 services:
   mariadb:
+    image: mariadb
     build:
       context: requirements/mariadb
       dockerfile: Dockerfile
@@ -21,6 +22,7 @@ services:
       - DB_ADMIN_USER=${DB_ADMIN_USER}
       - DB_ADMIN_PASSWORD=${DB_ADMIN_PASSWORD}
   wordpress:
+    image: wordpress
     build:
       context: requirements/wordpress
       dockerfile: Dockerfile
@@ -48,6 +50,7 @@ services:
       - WP_ADMIN_PASSWORD_FILE=/run/secrets/wp_admin_password
       - WP_ADMIN_EMAIL=${WP_ADMIN_EMAIL}
   nginx:
+    image: nginx
     build:
       context: requirements/nginx
       dockerfile: Dockerfile
