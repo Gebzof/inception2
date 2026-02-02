@@ -2,6 +2,11 @@
 
 set -e
 
+if echo "${WP_ADMIN_USER:-}" | grep -qiE 'admin|administrator'; then
+	echo "Error: WP_ADMIN_USER must not contain 'admin' or 'administrator'. Use e.g. superuser or manager."
+	exit 1
+fi
+
 echo "Downloading wordpress"
 
 echo "waiting for mariadb"
