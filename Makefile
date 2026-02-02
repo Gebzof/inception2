@@ -22,6 +22,10 @@ build:
 	@cd ./srcs && docker compose build
 	@echo "$(GREEN)$(BOLD) Docker images built successfully.$(DEFAULT)"
 
+rebuild:
+	@cd ./srcs && docker compose build --no-cache
+	@echo "$(GREEN)$(BOLD) Docker images rebuilt successfully.$(DEFAULT)"
+
 down:
 	@cd ./srcs && docker compose down
 	@echo "$(YELLOW)$(BOLD) Containers stopped successfully.$(DEFAULT)"
@@ -39,4 +43,4 @@ re:
 	@$(MAKE) clean && $(MAKE) up
 	@echo "$(YELLOW)$(BOLD) Containers restarted successfully.$(DEFAULT)"
 
-.PHONY: help up build down clean fclean re
+.PHONY: help up build rebuild down clean fclean re

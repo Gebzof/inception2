@@ -56,6 +56,10 @@ if ! wp core is-installed -path=/var/www/html --allow-root 2>/dev/null; then
 	--allow-root || true
 fi
 
+if [ -n "${WP_ADMIN_USER:-}" ] && [ -n "${WP_ADMIN_PASSWORD:-}" ]; then
+	wp user update "${WP_ADMIN_USER}" --user_pass="${WP_ADMIN_PASSWORD}" --path=/var/www/html --allow-root 2>/dev/null || true
+fi
+
 chown -R www-data:www-data /var/www/html
 
 mkdir -p /run/php
