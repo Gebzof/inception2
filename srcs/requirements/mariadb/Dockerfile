@@ -1,17 +1,17 @@
 FROM debian:bullseye
 
-RUN apt update && apgrade -y && apt install -y \
+RUN apt update && upgrade -y && apt install -y \
 	mariadb-server mariadb-client && \
 	apt clean && \
 	rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /docker-entrypoint-initdb.d
 
-COPY ./imit_mariadb.sh /imit_mariadb.sh
+COPY ./init_mariadb.sh /init_mariadb.sh
 
-RUN chmod +x /imit_mariadb.sh
+RUN chmod +x /init_mariadb.sh
 
 # port par defaut de mariadb
 EXPOSE 3306
 
-ENTRYPOINT ["/imit_mariadb.sh"]
+ENTRYPOINT ["/init_mariadb.sh"]

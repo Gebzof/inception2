@@ -19,7 +19,7 @@ RUN sed -i 's/listen = \/run\/php\/php7.4-fpm.sock/listen = 9000/g' /etc/php/7.4
 
 RUN chown -R www-data:www-data /var/www/html
 
-COPY tools/init_wordpress.sh /init_wordpress.sh
+COPY ./init_wordpress.sh /init_wordpress.sh
 
 RUN chmod 777 /init_wordpress.sh
 
