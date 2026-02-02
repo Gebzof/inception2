@@ -7,12 +7,12 @@ if echo "${WP_ADMIN_USER:-}" | grep -qiE 'admin|administrator'; then
 	exit 1
 fi
 
-# Lire les mots de passe depuis les secrets si disponibles
+# Lire les mots de passe depuis les secrets
 if [ -n "${WP_ADMIN_PASSWORD_FILE:-}" ] && [ -f "$WP_ADMIN_PASSWORD_FILE" ]; then
-	WP_ADMIN_PASSWORD=$(cat "$WP_ADMIN_PASSWORD_FILE")
+	WP_ADMIN_PASSWORD=$(cat "$WP_ADMIN_PASSWORD_FILE" | tr -d '\n\r')
 fi
 if [ -n "${DB_PASSWORD_FILE:-}" ] && [ -f "$DB_PASSWORD_FILE" ]; then
-	DB_PASSWORD=$(cat "$DB_PASSWORD_FILE")
+	DB_PASSWORD=$(cat "$DB_PASSWORD_FILE" | tr -d '\n\r')
 fi
 
 if [ ! -f /var/www/html/index.php ]; then
@@ -30,17 +30,19 @@ until mysqladmin ping -h "${DB_HOST:-mariadb}" -P 3306 --silent 2>/dev/null; do
 done
 
 echo "mariadb is ready"
+sleep 2
 
-if [ ! -f /var/www/html/wp-config.php ]; then
-	echo "configuring wordpress.."
-	wp core config \
-		--dbname="${DB_NAME:-wordpress}" \
-		--dbuser="${DB_USER:-wordpress}" \
-		--dbpass="${DB_PASSWORD:-wordpress}" \
-		--dbhost="${DB_HOST:-mariadb}" \
-		--allow-root \
-		--skip-check || true
-fi
+# Toujours régénérer wp-config.php pour utiliser le mot de passe correct (secrets lus avec tr -d)
+echo "configuring wordpress.."
+rm -f /var/www/html/wp-config.php
+wp core config \
+	--path=/var/www/html \
+	--dbname="${DB_NAME:-wordpress}" \
+	--dbuser="${DB_USER:-wordpress}" \
+	--dbpass="${DB_PASSWORD:-wordpress}" \
+	--dbhost="${DB_HOST:-mariadb}" \
+	--allow-root \
+	--skip-check || true
 
 if ! wp core is-installed -path=/var/www/html --allow-root 2>/dev/null; then
 	echo "installing wordpress"
@@ -55,6 +57,8 @@ if ! wp core is-installed -path=/var/www/html --allow-root 2>/dev/null; then
 fi
 
 chown -R www-data:www-data /var/www/html
+
+mkdir -p /run/php
 
 echo "wordpress is ready"
 

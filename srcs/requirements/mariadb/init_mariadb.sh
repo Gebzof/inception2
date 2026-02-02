@@ -2,8 +2,15 @@
 
 set -e
 
+if [ -f /run/secrets/db_password ]; then
+	DB_PASSWORD=$(cat /run/secrets/db_password | tr -d '\n\r')
+fi
+if [ -f /run/secrets/db_admin_password ]; then
+	DB_ADMIN_PASSWORD=$(cat /run/secrets/db_admin_password | tr -d '\n\r')
+fi
+
 if [ -z "$DB_NAME" ] || [ -z "$DB_USER" ] || [ -z "$DB_PASSWORD" ] || [ -z "$DB_ADMIN_USER" ] || [ -z "$DB_ADMIN_PASSWORD" ]; then
-    echo "Error: Required environment variables DB_NAME, DB_USER, DB_PASSWORD, DB_ADMIN_USER, DB_ADMIN_PASSWORD are not set."
+    echo "Error: Required DB_NAME, DB_USER, DB_PASSWORD, DB_ADMIN_USER, DB_ADMIN_PASSWORD (env or secrets) are not set."
     exit 1
 fi
 
@@ -32,9 +39,11 @@ mysql -u root <<EOF
 CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 CREATE USER IF NOT EXISTS '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}';
+ALTER USER '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}';
 GRANT ALL PRIVILEGES ON \`${DB_NAME}\`.* TO '${DB_USER}'@'%';
 
 CREATE USER IF NOT EXISTS '${DB_ADMIN_USER}'@'%' IDENTIFIED BY '${DB_ADMIN_PASSWORD}';
+ALTER USER '${DB_ADMIN_USER}'@'%' IDENTIFIED BY '${DB_ADMIN_PASSWORD}';
 GRANT ALL PRIVILEGES ON *.* TO '${DB_ADMIN_USER}'@'%' WITH GRANT OPTION;
 
 FLUSH PRIVILEGES;
