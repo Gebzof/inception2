@@ -1,6 +1,6 @@
 FROM debian:bullseye
 
-RUN apt update && upgrade -y && apt install -y \
+RUN apt update && apt upgrade -y && apt install -y \
 	mariadb-server mariadb-client && \
 	apt clean && \
 	rm -rf /var/lib/apt/lists/*

@@ -7,7 +7,7 @@ RUN apt update && apt upgrade -y && apt install -y\
 
 RUN mkdir -p /var/www/html
 
-RUN wget https://wordpress.org/latest.tar.gz && tar -xvf latest.tar.gz -C /var/www/html --strip-cc rm latest.tar.gz
+RUN wget https://wordpress.org/latest.tar.gz && tar -xvf latest.tar.gz -C /var/www/html --strip-components=1 && rm latest.tar.gz
 
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
 	chmod +x wp-cli.phar && \
