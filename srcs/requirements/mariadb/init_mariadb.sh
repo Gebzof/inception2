@@ -2,8 +2,8 @@
 
 set -e
 
-if [ -z "$DB_NAME" ] || [ -z "$DB_USER" ] || [ -z "$DB_DATABASE_PASSWORD" ] || [ -z "$WP_ADMIN_USER" ] || [ -z "$WP_ADMIN_PASSWORD" ] || [ -z "$WP_ADMIN_EMAIL" ]; then
-    echo "Error: Required environment variables WP_DATABASE, WP_DATABASE_USER, WP_DATABASE_PASSWORD, BASE_HOST, WP_ADMIN_USER, WP_ADMIN_PASSWORD, or WP_ADMIN_EMAIL are not set."
+if [ -z "$DB_NAME" ] || [ -z "$DB_USER" ] || [ -z "$DB_PASSWORD" ] || [ -z "$DB_ADMIN_USER" ] || [ -z "$DB_ADMIN_PASSWORD" ]; then
+    echo "Error: Required environment variables DB_NAME, DB_USER, DB_PASSWORD, DB_ADMIN_USER, DB_ADMIN_PASSWORD are not set."
     exit 1
 fi
 
