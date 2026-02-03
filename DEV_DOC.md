@@ -127,10 +127,10 @@ Run these from the project root; for `docker compose` you must be in `srcs/` or 
 ## Where data is stored and how it persists
 
 - **WordPress files** (themes, uploads, `wp-config.php`, etc.):  
-  Stored in the **named volume** `wordpress_data`, which is configured (via `driver_opts` in `docker-compose.yml`) to store data on the host under **`/home/<login>/data/wordpress`** (e.g. `/home/gebz/data/wordpress`). So the path on the host is `$HOME/data/wordpress`.
+  Stored in the **named volume** `wordpress_data`, which is configured (via `driver_opts` in `docker-compose.yml`) to store data on the host under **`/home/<login>/data/wordpress`** (e.g. `/home/gpichon/data/wordpress`). So the path on the host is `$HOME/data/wordpress`.
 
 - **MariaDB data** (databases, tables):  
-  Stored in the **named volume** `mariadb_data`, configured to store on the host under **`/home/<login>/data/mariadb`** (e.g. `/home/gebz/data/mariadb`). So the path on the host is `$HOME/data/mariadb`.
+  Stored in the **named volume** `mariadb_data`, configured to store on the host under **`/home/<login>/data/mariadb`** (e.g. `/home/gpichon/data/mariadb`). So the path on the host is `$HOME/data/mariadb`.
 
 - **Persistence:** As long as you do not run `make clean` or `make fclean`, these directories (and thus the named volumes) are kept. After `make down`, data remains. After `make clean`, the volumes and their data are removed. The Makefile creates `~/data/wordpress` and `~/data/mariadb` before `make up` so the host paths exist for the volume driver.
 

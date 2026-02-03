@@ -42,17 +42,17 @@ Only NGINX is exposed to the outside (port 443). WordPress and MariaDB are reach
 
 ## Access the website and the administration panel
 
-1. **Domain:** The project expects the domain **`<login>.42.fr`** (e.g. `gebz.42.fr`) to point to your machine. Add a line in `/etc/hosts` on your machine (and on the machine you use to browse) if needed:
+1. **Domain:** The project expects the domain **`<login>.42.fr`** (e.g. `gpichon.42.fr`) to point to your machine. Add a line in `/etc/hosts` on your machine (and on the machine you use to browse) if needed:
    ```
-   127.0.0.1   gebz.42.fr
+   127.0.0.1  gpichon.42.fr
    ```
-   Replace `gebz` with your login and use your VM’s IP instead of `127.0.0.1` if you access from another machine.
+   Replace `gpichon` with your login and use your VM’s IP instead of `127.0.0.1` if you access from another machine.
 
 2. **Website:** Open in a browser:
    ```
    https://<login>.42.fr
    ```
-   (e.g. `https://gebz.42.fr`). Accept the self-signed certificate warning if you use the default TLS certificate from the image.
+   (e.g. `https://gpichon.42.fr`). Accept the self-signed certificate warning if you use the default TLS certificate from the image.
 
 3. **WordPress admin panel:** Open:
    ```
