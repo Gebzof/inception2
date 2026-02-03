@@ -26,6 +26,8 @@ See [USER_DOC.md](USER_DOC.md) for end-user/admin usage and [DEV_DOC.md](DEV_DOC
 - [NGINX](https://nginx.org/en/docs/), [WordPress](https://wordpress.org/support/), [MariaDB](https://mariadb.org/documentation/)
 - [PID 1 in containers](https://docs.docker.com/engine/reference/run/#pid-settings)
 
+- IA (CHATGPT), is a good help when you want a info on your thing and can help your for a command, or a error who your don't know what is it.
+
 ---
 
 ## Project description — Docker and design choices
