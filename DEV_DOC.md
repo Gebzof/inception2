@@ -6,9 +6,9 @@ This document describes how a developer can set up the environment from scratch,
 
 ## Prerequisites
 
-- **Docker** and **Docker Compose** (Compose V2 plugin: `docker compose`).
-- **Make** (for the Makefile).
-- **Git** (to clone the repo).
+- Docker and Docker Compose (Compose V2 plugin: `docker compose`).
+- Make (for the Makefile).
+- Git (to clone the repo).
 
 The Makefile can trigger Docker installation if Docker is missing (see `make install-docker` or the `check-docker` target). You need `sudo` for that. On Debian/Ubuntu, you can also install Docker using the [official documentation](https://docs.docker.com/engine/install/).
 
@@ -41,7 +41,7 @@ inception2/
 
 ### Secrets (required)
 
-Create the `secrets/` directory at the **root** of the repo and add these files with your chosen values:
+Create the `secrets/` directory at the root of the repo and add these files with your chosen values:
 
 | File | Purpose |
 |------|--------|
@@ -61,13 +61,13 @@ Create or edit `srcs/.env` with at least:
 - `WP_DATABASE`, `WP_DATABASE_USER`
 - `WP_URL`, `WP_TITLE`, `WP_ADMIN_USER`, `WP_ADMIN_EMAIL`
 
-Use placeholders or the same values as in `secrets/` for passwords. **Do not commit real passwords.** `WP_ADMIN_USER` must not contain the strings "admin" or "administrator".
+Use placeholders or the same values as in `secrets/` for passwords. Do not commit real passwords. `WP_ADMIN_USER` must not contain the strings "admin" or "administrator".
 
 ---
 
 ## Build and launch with Makefile and Docker Compose
 
-All commands below are run from the **project root** (`inception2/`).
+All commands below are run from the project root (`inception2/`).
 
 | Command | Description |
 |--------|-------------|
@@ -99,26 +99,26 @@ make up     # start again
 
 Run these from the project root; for `docker compose` you must be in `srcs/` or pass `-f srcs/docker-compose.yml`.
 
-- **List running containers:**  
+- List running containers:  
   `docker ps`
 
-- **Logs (all services):**  
+- Logs (all services):  
   `cd srcs && docker compose logs -f`  
   Or: `docker compose -f srcs/docker-compose.yml logs -f`
 
-- **Logs (one service):**  
+- Logs (one service):  
   `docker compose -f srcs/docker-compose.yml logs -f wordpress`  
   (same with `mariadb` or `nginx`)
 
-- **Shell inside a container:**  
+- Shell inside a container:  
   `docker exec -it wordpress bash`  
   (replace `wordpress` with `mariadb` or `nginx` and use `sh` if `bash` is not available)
 
-- **List volumes:**  
+- List volumes:  
   `docker volume ls`  
   You should see `inception2_mariadb_data` and `inception2_wordpress_data` (prefix may depend on the project directory name).
 
-- **Inspect a volume:**  
+- Inspect a volume:  
   `docker volume inspect inception2_wordpress_data`  
   The mountpoint or driver options show where data is stored on the host.
 
@@ -126,12 +126,12 @@ Run these from the project root; for `docker compose` you must be in `srcs/` or 
 
 ## Where data is stored and how it persists
 
-- **WordPress files** (themes, uploads, `wp-config.php`, etc.):  
-  Stored in the **named volume** `wordpress_data`, which is configured (via `driver_opts` in `docker-compose.yml`) to store data on the host under **`/home/<login>/data/wordpress`** (e.g. `/home/gpichon/data/wordpress`). So the path on the host is `$HOME/data/wordpress`.
+- WordPress files (themes, uploads, `wp-config.php`, etc.):  
+  Stored in the named volume `wordpress_data`, which is configured (via `driver_opts` in `docker-compose.yml`) to store data on the host under `/home/<login>/data/wordpress` (e.g. `/home/gpichon/data/wordpress`). So the path on the host is `$HOME/data/wordpress`.
 
-- **MariaDB data** (databases, tables):  
-  Stored in the **named volume** `mariadb_data`, configured to store on the host under **`/home/<login>/data/mariadb`** (e.g. `/home/gpichon/data/mariadb`). So the path on the host is `$HOME/data/mariadb`.
+- MariaDB data (databases, tables):  
+  Stored in the named volume `mariadb_data`, configured to store on the host under `/home/<login>/data/mariadb` (e.g. `/home/gpichon/data/mariadb`). So the path on the host is `$HOME/data/mariadb`.
 
-- **Persistence:** As long as you do not run `make clean` or `make fclean`, these directories (and thus the named volumes) are kept. After `make down`, data remains. After `make clean`, the volumes and their data are removed. The Makefile creates `~/data/wordpress` and `~/data/mariadb` before `make up` so the host paths exist for the volume driver.
+- Persistence: As long as you do not run `make clean` or `make fclean`, these directories (and thus the named volumes) are kept. After `make down`, data remains. After `make clean`, the volumes and their data are removed. The Makefile creates `~/data/wordpress` and `~/data/mariadb` before `make up` so the host paths exist for the volume driver.
 
-- **Rebuilds:** `make build` or `make up --build` rebuild images; they do not remove volumes. So rebuilding does not delete WordPress or MariaDB data unless you also run `make clean`.
+- Rebuilds: `make build` or `make up --build` rebuild images; they do not remove volumes. So rebuilding does not delete WordPress or MariaDB data unless you also run `make clean`.
