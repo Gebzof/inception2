@@ -1,4 +1,4 @@
-FROM debian:bullseye
+FROM debian:bookworm
 
 RUN apt update && apt upgrade -y && apt install -y\
 	php-fpm php-mysql php-mysqli php-curl php-gd php-xml php-mbstring php-zip php-dom php-intl wget curl mariadb-client &&\
